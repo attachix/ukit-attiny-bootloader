@@ -1,0 +1,28 @@
+sudo: false
+env:
+  global:
+  - SDK_BUILD=258
+  - secure: FzY09r1LIoTB+OruYE3RB8mfU09g7QUWbpz6iOsoVqX9qlROJn4BQVUALEaD6KLIgTX3ogix62Eb7bNdrax99Htp0rjIB47QKNYvfhMPj78+exqWf4JPbd1Th5Q/dJfmSILyx96FK9xxqG9wcxDRigx5SSUbbP9mvHZIOe7rLE0jI0KlsHoKb7cQOF5Xq46ZdadOY3GYN+9UTxABUdqWOu8nQFfeC3QGRkb65YDxXShfMYdgLwgDgcyDIkzfgrGvPfe4cq2fPqV1ZyKk2MJKLWlEo+5gG6V9I7HbNfoSeptGqRKqt0dBzwGwsOvALNYsmJO3/1VSvuIMqg9Lsu6l0AFIX5T1I7vNvUyE28/MSTxXu23KmIS66KnypKDaGTKqcSUlVJrvd47+YmWQVjcOo2tPlS0gVsPB6DN7k2HBPVBlWpvppgq4ZNRVtFpiW6PLcV6TYAMIGucCWBwshqi8iSlhKIeleczUBF7TuLfVRGjMiBuUP326jyf7Nc4bd4zwlC4U3vmxFf1AdYPepKNiZj4VUHZ4seLia4El2xNHKOBh16X/y5/1KZ2Z8ot7zmUDbf/qFMZMGLdBnFdAfF+GwVUIM3ZutZmrDXGuuX9mWDzlkPIoXMnLUYRtB514M/79t5mceq5TWzvszyf7ERfB4HnPVYQu8jwnqPIyr5cQ/7E=
+matrix:
+  include:
+  - os: linux
+    env: SDK_VERSION=1.5.0
+git:
+  submodules: false
+addons:
+  apt:
+    packages:
+    - wine
+install:
+- wget https://raw.githubusercontent.com/attachix/ukit/master/.travis/update-parent.sh
+  && chmod a+x update-parent.sh
+script:
+- env
+- export DEPLOY='true'
+deploy:
+  provider: script
+  script: sh $TRAVIS_BUILD_DIR/update-parent.sh "ukit-firmware" "attiny/bootloader"
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: "$DEPLOY == true"
